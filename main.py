@@ -62,22 +62,23 @@ if __name__ == '__main__':
     for ticket in _tickets.getTicket():
         s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         logging.info('timeStamp : ' + s)
-        for i in range(1, 50):
+        for i in range(1, 100):
             dManager = driverManager()
+
             driver = dManager.open_browser_phone()
+
             try:
-                keyword = ticket[1]
-                page = ticket[2]
-                n = ticket[3]
-                title = ticket[4]
-
-                logging.info('cycle : ' + str(i))
-                logging.info(driver.title)
-                logging.info(driver.current_url)
-
-                webPageClass = ticket[0](driver)
-                webPageClass.do(keyword, page, n, title)
-                # webPageClass
+                # keyword = ticket[1]
+                # page = ticket[2]
+                # n = ticket[3]
+                # title = ticket[4]
+                #
+                # logging.info('cycle : ' + str(i))
+                # logging.info(driver.title)
+                # logging.info(driver.current_url)
+                #
+                # webPageClass = ticket[0](driver)
+                # webPageClass.do(keyword, page, n, title)
 
                 driver.quit()
                 logging.info('------------------------------')

@@ -38,12 +38,16 @@ class driverManager:
         return ua
 
     def open_browser_phone(self):
+        import datetime
+        import time
+        from selenium.webdriver.common.by import By
+
         dc = {
             "platformName": "Android",
             "platformVersion": "9.0",
-            "deviceName": "ce05171555816f1b03",
+            "deviceName": "ce10171ab8ac5f3e04",
             "browserName": "chrome",
-            "browserVersion": "109.0.5414.86"
+            "browserVersion": "109.0.5414.117"
         }
 
         # dc = {}
@@ -57,9 +61,9 @@ class driverManager:
         # 옵션 설정
         chrome_options.add_argument("platformName:Android")
         chrome_options.add_argument("platformVersion:9.0")
-        chrome_options.add_argument("deviceName:ce05171555816f1b03")
+        chrome_options.add_argument("deviceName:ce10171ab8ac5f3e04")
         chrome_options.add_argument("browserName:chrome")
-        chrome_options.add_argument("browserVersion:109.0.5414.86")
+        chrome_options.add_argument("browserVersion:109.0.5414.117")
         user_agent = self.get_ua()
         chrome_options.add_argument('user-agent=' + user_agent)
 
@@ -69,9 +73,10 @@ class driverManager:
 
         self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
         # driver.get('https://www.aladin.co.kr/')
-        self.driver.implicitly_wait(5)
-        print('------------------------------')
-        self.driver.get('https://whatismyipaddress.com/')
+        start = time.time()
+
+        # self.driver.implicitly_wait(10)
+        # self.driver.get('https://whatismyipaddress.com/')
 
         self.driver.execute_script('mobile: shell', {
         'command': 'svc',
@@ -79,20 +84,40 @@ class driverManager:
         'timeout': 5000
         })
 
-
         self.driver.execute_script('mobile: shell', {
         'command': 'svc',
         'args': ['data', 'enable'],
         'timeout': 5000
         })
 
-        self.driver.get('https://whatismyipaddress.com/')
+        while True:
+            try:
+                self.driver.get('https://whatismyipaddress.com/')
 
+            except:
+                self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
+                print("!!! Waiting for connection with appium server !!!")
+                time.sleep(1)
+            else:
+                break
+
+        sec = time.time() - start
+        times = str(datetime.timedelta(seconds=sec)).split(".")
+        times = times[0]
+
+        print("- it takes : " + times)
         # adb shell svc data disable
         # adb shell settings put global airplane_mode_on 1
         #
         # adb shell svc data enable
         # adb shell settings put global airplane_mode_on 0
+
+        self.driver.implicitly_wait(10)
+        targets = self.driver.find_element(By.ID, 'ipv4')
+
+        print("ip : " + targets.text)
+
+        print('------------------------------')
 
         return self.driver
 
