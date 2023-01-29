@@ -93,7 +93,6 @@ class driverManager:
         while True:
             try:
                 self.driver.get('https://whatismyipaddress.com/')
-
             except:
                 self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
                 print("!!! Waiting for connection with appium server !!!")
@@ -112,7 +111,9 @@ class driverManager:
         # adb shell svc data enable
         # adb shell settings put global airplane_mode_on 0
 
-        self.driver.implicitly_wait(10)
+        # dom 내려온 다음 실행하게 하는 함수
+        self.driver.implicitly_wait(60)
+
         targets = self.driver.find_element(By.ID, 'ipv4')
 
         print("ip : " + targets.text)
