@@ -92,19 +92,15 @@ class driverManager:
 
         while True:
             try:
-                self.driver.get('https://whatismyipaddress.com/')
+                self.driver.get('https://m.search.naver.com/search.naver?where=m&sm=top_hty&fbm=0&ie=utf8&query=ip+%EC%A3%BC%EC%86%8C+%ED%99%95%EC%9D%B8')
             except:
                 self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
-                print("!!! Waiting for connection with appium server !!!")
+                print("ERROR: Waiting for connection with appium server !!!")
                 time.sleep(1)
             else:
                 break
 
-        sec = time.time() - start
-        times = str(datetime.timedelta(seconds=sec)).split(".")
-        times = times[0]
 
-        print("- it takes : " + times)
         # adb shell svc data disable
         # adb shell settings put global airplane_mode_on 1
         #
@@ -114,9 +110,15 @@ class driverManager:
         # dom 내려온 다음 실행하게 하는 함수
         self.driver.implicitly_wait(60)
 
-        targets = self.driver.find_element(By.ID, 'ipv4')
+        targets = self.driver.find_element(By.CLASS_NAME, 'ip_info')
 
-        print("ip : " + targets.text)
+        print("DEBUG: ip address - " + targets.text)
+
+        sec = time.time() - start
+        times = str(datetime.timedelta(seconds=sec)).split(".")
+        times = times[0]
+
+        print("DEBUG: it takes " + times)
 
         print('------------------------------')
 
