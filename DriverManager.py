@@ -117,6 +117,7 @@ class driverManager:
                 print("DEBUG: ip address - " + targets.text)
             except:
                 self.driver.refresh();
+                print("ERROR: refreshed")
             else:
                 break
 
