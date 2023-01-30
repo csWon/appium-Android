@@ -94,6 +94,7 @@ class driverManager:
 
         while True:
             try:
+                self.driver.implicitly_wait(60)
                 self.driver.get('https://m.search.naver.com/search.naver?where=m&sm=top_hty&fbm=0&ie=utf8&query=ip+%EC%A3%BC%EC%86%8C+%ED%99%95%EC%9D%B8')
             except:
                 self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
@@ -110,11 +111,17 @@ class driverManager:
         # adb shell settings put global airplane_mode_on 0
 
         # dom 내려온 다음 실행하게 하는 함수
-        self.driver.implicitly_wait(60)
 
-        targets = self.driver.find_element(By.CLASS_NAME, 'ip_info')
-
-        print("DEBUG: ip address - " + targets.text)
+        while True:
+            try:
+                self.driver.implicitly_wait(60)
+                targets = self.driver.find_element(By.CLASS_NAME, 'ip_info')
+                print("DEBUG: ip address - " + targets.text)
+            except:
+                self.driver.refresh();
+                print("ERROR: refreshed")
+            else:
+                break
 
         sec = time.time() - start
         times = str(datetime.timedelta(seconds=sec)).split(".")
