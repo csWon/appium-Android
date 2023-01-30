@@ -68,17 +68,17 @@ if __name__ == '__main__':
             driver = dManager.open_browser_phone()
 
             try:
-                # keyword = ticket[1]
-                # page = ticket[2]
-                # n = ticket[3]
-                # title = ticket[4]
-                #
-                # logging.info('cycle : ' + str(i))
-                # logging.info(driver.title)
-                # logging.info(driver.current_url)
-                #
-                # webPageClass = ticket[0](driver)
-                # webPageClass.do(keyword, page, n, title)
+                keyword = ticket[1]
+                page = ticket[2]
+                n = ticket[3]
+                title = ticket[4]
+
+                logging.info('cycle : ' + str(i))
+                logging.info(driver.title)
+                logging.info(driver.current_url)
+
+                webPageClass = ticket[0](driver)
+                webPageClass.do(keyword, page, n, title)
 
                 driver.quit()
                 logging.info('------------------------------')

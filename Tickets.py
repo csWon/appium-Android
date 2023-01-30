@@ -7,7 +7,7 @@ from DriverManager import driverManager
 class tickets:
     def getTicket(self):
         testList_12124 = [
-            [aladin, '', 0, 0, '생각하라 그리고 부자가 되어라'],
+            [aladin, '', 0, 0, '사랑의 이해'],
             # [kyobo, '', 0, 0, '코스모스'],
             # [yes24, '', 0, 0, '이토록 평범한 미래'],
             # [kyobo, '', 0, 0, '클루지'],

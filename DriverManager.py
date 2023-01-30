@@ -45,9 +45,11 @@ class driverManager:
         dc = {
             "platformName": "Android",
             "platformVersion": "9.0",
-            "deviceName": "ce10171ab8ac5f3e04",
+            # "deviceName": "ce10171ab8ac5f3e04",
+            "deviceName": "ce05171555816f1b03",
             "browserName": "chrome",
-            "browserVersion": "109.0.5414.117"
+            "browserVersion":"109.0.5414.86"
+            # "browserVersion": "109.0.5414.117"
         }
 
         # dc = {}
@@ -57,15 +59,15 @@ class driverManager:
         # dc["browserName"] = "chrome"
         # dc["browserVersion"] = "109.0.5414.86"
 
-        chrome_options = webdriver.ChromeOptions()
-        # 옵션 설정
-        chrome_options.add_argument("platformName:Android")
-        chrome_options.add_argument("platformVersion:9.0")
-        chrome_options.add_argument("deviceName:ce10171ab8ac5f3e04")
-        chrome_options.add_argument("browserName:chrome")
-        chrome_options.add_argument("browserVersion:109.0.5414.117")
-        user_agent = self.get_ua()
-        chrome_options.add_argument('user-agent=' + user_agent)
+        # chrome_options = webdriver.ChromeOptions()
+        # # 옵션 설정
+        # chrome_options.add_argument("platformName:Android")
+        # chrome_options.add_argument("platformVersion:9.0")
+        # chrome_options.add_argument("deviceName:ce10171ab8ac5f3e04")
+        # chrome_options.add_argument("browserName:chrome")
+        # chrome_options.add_argument("browserVersion:109.0.5414.117")
+        # user_agent = self.get_ua()
+        # chrome_options.add_argument('user-agent=' + user_agent)
 
         # 브라우저 열기
         # self.driver = webdriver.Chrome(executable_path='C:\chromedriver\chromedriver.exe', options=chrome_options)

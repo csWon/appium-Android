@@ -258,52 +258,73 @@ class aladin(bookStore):
 
         self.driver.get(super().url_aladin)
 
-        pop_up_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
-        pop_up_btn.click()
+        #'//*[@id="spaceEventLayer"]/div[1]/a[2]
+        pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
+        pop_up_close_btn.click()
 
-        simple_join_btn = self.driver.find_element(By.CLASS_NAME, 'set3m')
-        simple_join_btn.click()
+        # simple_join_btn = self.driver.find_element(By.CLASS_NAME, 'set3m')
+        # simple_join_btn.click()
 
-        self.simple_join()
+        # self.simple_join()
 
         fakeKeywords = open('keyword.txt', 'r', encoding='UTF8').read().split('\n')
         Keyword_3 = random.choices(fakeKeywords, k=2)
         Keyword_3.append(title)
-        for fKeyword in Keyword_3:
-            try:
-                # 책 제목 입력
-                # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
-                search_box = self.driver.find_element(By.ID, 'SearchWord')
-                search_box.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
-                search_box.click()
-                search_box.send_keys(fKeyword)
-                super().delay()
+        # for fKeyword in Keyword_3:
+        #     try:
+        #         # 책 제목 입력
+        #         # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
+        #         search_box = self.driver.find_element(By.ID, 'SearchWordBanner')
+        #
+        #         # search_box.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
+        #         search_box.click()
+        #
+        #         search_box2 = self.driver.find_element(By.ID, 'SearchWord')
+        #
+        #         search_box2.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
+        #         search_box2.click()
+        #
+        #         search_box2.send_keys(fKeyword)
+        #
+        #         super().delay()
+        #
+        #         # 검색 버튼 클릭
+        #         # document.getElementsByClassName('schBtn')[0].childNodes[0].click()
+        #         btn = self.driver.find_element(By.CLASS_NAME, 'sch-go')
+        #         btn.click()
+        #         super().delay_10()
+        #
+        #         addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/table/tbody/tr/td[3]/img')
+        #         addCartBtn.click()
+        #         super().delay_n(2)
+        #
+        #         addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/div[2]/a[1]')
+        #         addCartBtn.click()
+        #
+        #
+        #     except Exception as e:
+        #         logging.info("loop exception!! : ", e)
 
-                # 검색 버튼 클릭
-                # document.getElementsByClassName('schBtn')[0].childNodes[0].click()
-                btn = self.driver.find_element(By.CLASS_NAME, 'searchBtn')
-                btn.click()
-                super().delay_10()
+        # homebtn = self.driver.find_element(By.XPATH,'/html/body/div[2]/h1')
+        # homebtn.click()
+        # super().delay_n(2)
 
-                addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[1]/table/tbody/tr/td[3]/table/tbody/tr[1]/td[2]/div/div[1]/a')
-                addCartBtn.click()
+        # pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
+        # pop_up_close_btn.click()
 
-            except Exception as e:
-                logging.info("loop exception!! : ", e)
-
-        bestbtn = self.driver.find_element(By.XPATH, '//*[@id="re_mallmenu"]/ul/li[3]/div/a/img')
+        bestbtn = self.driver.find_element(By.XPATH,'//*[@id="welcom_wrap"]/div[9]/div/li[1]')
         bestbtn.click()
         super().delay()
 
         i = 0
         endflag = False
         for _page in range(3, 9):
-            targets = self.driver.find_elements(By.CLASS_NAME, 'bo3')
+            targets = self.driver.find_elements(By.CLASS_NAME, 'b_book_t')
             super().delay()
             for target in targets:
                 # logging.info(target.text)
                 i = i + 1
-                if (target.text == title):
+                if title in target.text:
                     endflag = True
                     target.click()
                     logging.info('idx : ' + str(i))
@@ -328,7 +349,12 @@ class aladin(bookStore):
                     break
             if endflag == True:
                 break
-            nextPageBtn = self.driver.find_element(By.XPATH, '//*[@id="newbg_body"]/div[3]/ul/li[' + str(_page) + ']/a')
+
+            # //*[@id="contents_Wrap"]/div[5]/div/ul/li[2]/a
+            # //*[@id="contents_Wrap"]/div[5]/div/ul/li[2]/a
+            # //*[@id="contents_Wrap"]/div[5]/div/ul/li[2]/a
+            #
+            nextPageBtn = self.driver.find_element(By.XPATH, '//*[@id="contents_Wrap"]/div[5]/div/ul/li['+str(_page)+']/a')
             nextPageBtn.click()
             super().delay()
 
