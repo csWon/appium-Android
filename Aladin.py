@@ -270,47 +270,47 @@ class aladin(bookStore):
         fakeKeywords = open('keyword.txt', 'r', encoding='UTF8').read().split('\n')
         Keyword_3 = random.choices(fakeKeywords, k=2)
         Keyword_3.append(title)
-        # for fKeyword in Keyword_3:
-        #     try:
-        #         # 책 제목 입력
-        #         # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
-        #         search_box = self.driver.find_element(By.ID, 'SearchWordBanner')
-        #
-        #         # search_box.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
-        #         search_box.click()
-        #
-        #         search_box2 = self.driver.find_element(By.ID, 'SearchWord')
-        #
-        #         search_box2.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
-        #         search_box2.click()
-        #
-        #         search_box2.send_keys(fKeyword)
-        #
-        #         super().delay()
-        #
-        #         # 검색 버튼 클릭
-        #         # document.getElementsByClassName('schBtn')[0].childNodes[0].click()
-        #         btn = self.driver.find_element(By.CLASS_NAME, 'sch-go')
-        #         btn.click()
-        #         super().delay_10()
-        #
-        #         addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/table/tbody/tr/td[3]/img')
-        #         addCartBtn.click()
-        #         super().delay_n(2)
-        #
-        #         addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/div[2]/a[1]')
-        #         addCartBtn.click()
-        #
-        #
-        #     except Exception as e:
-        #         logging.info("loop exception!! : ", e)
+        for fKeyword in Keyword_3:
+            try:
+                # 책 제목 입력
+                # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
+                search_box = self.driver.find_element(By.ID, 'SearchWordBanner')
 
-        # homebtn = self.driver.find_element(By.XPATH,'/html/body/div[2]/h1')
-        # homebtn.click()
-        # super().delay_n(2)
+                # search_box.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
+                search_box.click()
 
-        # pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
-        # pop_up_close_btn.click()
+                search_box2 = self.driver.find_element(By.ID, 'SearchWord')
+
+                search_box2.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
+                search_box2.click()
+
+                search_box2.send_keys(fKeyword)
+
+                super().delay()
+
+                # 검색 버튼 클릭
+                # document.getElementsByClassName('schBtn')[0].childNodes[0].click()
+                btn = self.driver.find_element(By.CLASS_NAME, 'sch-go')
+                btn.click()
+                super().delay_10()
+
+                addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/table/tbody/tr/td[3]/img')
+                addCartBtn.click()
+                super().delay_n(2)
+
+                addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/div[2]/a[1]')
+                addCartBtn.click()
+
+
+            except Exception as e:
+                logging.info("loop exception!! : ", e)
+
+        homebtn = self.driver.find_element(By.XPATH,'/html/body/div[2]/h1')
+        homebtn.click()
+        super().delay_n(2)
+
+        pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
+        pop_up_close_btn.click()
 
         bestbtn = self.driver.find_element(By.XPATH,'//*[@id="welcom_wrap"]/div[9]/div/li[1]')
         bestbtn.click()
@@ -318,7 +318,7 @@ class aladin(bookStore):
 
         i = 0
         endflag = False
-        for _page in range(3, 9):
+        for _page in range(2, 9):
             targets = self.driver.find_elements(By.CLASS_NAME, 'b_book_t')
             super().delay()
             for target in targets:
@@ -330,13 +330,14 @@ class aladin(bookStore):
                     logging.info('idx : ' + str(i))
                     logging.info(self.driver.current_url)
                     logging.info('clicked title : ' + self.driver.title)
-                    addCartBtn = self.driver.find_element(By.CLASS_NAME, 'Ere_btn_cart.Ere_floatL')
+                    print('clicked title : ' + self.driver.title)
+                    addCartBtn = self.driver.find_element(By.ID, 'btnAddBasket')
                     addCartBtn.click()
                     super().delay()
 
-                    saveBoxBtn = self.driver.find_element(By.ID, 'btn_savebasket')
-                    saveBoxBtn.click()
-                    super().delay()
+                    # saveBoxBtn = self.driver.find_element(By.ID, 'btn_savebasket')
+                    # saveBoxBtn.click()
+                    # super().delay()
                     # btn_buy = self.driver.find_element(By.CLASS_NAME, 'Ere_btn_buyitnow.Ere_floatL.Ere_ML4')
                     # btn_buy.click()
                     # super().delay()
@@ -358,4 +359,4 @@ class aladin(bookStore):
             nextPageBtn.click()
             super().delay()
 
-        super().delay_n(90)
+        super().delay_n(10)

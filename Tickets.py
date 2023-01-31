@@ -1,13 +1,14 @@
 # import Kyobo
 # from Kyobo import kyobo
-# from Yes24 import yes24
+from Yes24 import yes24
 from Aladin import aladin
 from DriverManager import driverManager
 
 class tickets:
     def getTicket(self):
         testList_12124 = [
-            [aladin, '', 0, 0, '사랑의 이해'],
+            # [aladin, '', 0, 0, '쿼런틴'],
+            [yes24, '', 0, 0, '쿼런틴'],
             # [kyobo, '', 0, 0, '코스모스'],
             # [yes24, '', 0, 0, '이토록 평범한 미래'],
             # [kyobo, '', 0, 0, '클루지'],

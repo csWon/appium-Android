@@ -95,7 +95,7 @@ class driverManager:
         while True:
             try:
                 self.driver.implicitly_wait(60)
-                self.driver.get('https://m.search.naver.com/search.naver?where=m&sm=top_hty&fbm=0&ie=utf8&query=ip+%EC%A3%BC%EC%86%8C+%ED%99%95%EC%9D%B8')
+                self.driver.get('https://www.naver.com/')
             except:
                 self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
                 print("ERROR: Waiting for connection with appium server !!!")

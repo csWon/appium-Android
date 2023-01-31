@@ -66,6 +66,7 @@ if __name__ == '__main__':
             dManager = driverManager()
 
             driver = dManager.open_browser_phone()
+            driver.delete_all_cookies()
 
             try:
                 keyword = ticket[1]
@@ -80,7 +81,8 @@ if __name__ == '__main__':
                 webPageClass = ticket[0](driver)
                 webPageClass.do(keyword, page, n, title)
 
-                driver.quit()
+                # driver.delete_all_cookies()
+                # driver.quit()
                 logging.info('------------------------------')
 
             except Exception as e:
