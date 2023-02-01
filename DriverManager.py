@@ -112,16 +112,16 @@ class driverManager:
 
         # dom 내려온 다음 실행하게 하는 함수
 
-        while True:
-            try:
-                self.driver.implicitly_wait(60)
-                targets = self.driver.find_element(By.CLASS_NAME, 'ip_info')
-                print("DEBUG: ip address - " + targets.text)
-            except:
-                self.driver.refresh();
-                print("ERROR: refreshed")
-            else:
-                break
+        # while True:
+        #     try:
+        #         self.driver.implicitly_wait(60)
+        #         targets = self.driver.find_element(By.CLASS_NAME, 'ip_info')
+        #         print("DEBUG: ip address - " + targets.text)
+        #     except:
+        #         self.driver.refresh();
+        #         print("ERROR: refreshed")
+        #     else:
+        #         break
 
         sec = time.time() - start
         times = str(datetime.timedelta(seconds=sec)).split(".")
