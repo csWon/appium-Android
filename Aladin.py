@@ -257,6 +257,9 @@ class aladin(bookStore):
         n = n - 1
 
         self.driver.get(super().url_aladin)
+        cookies = self.driver.get_cookies()
+        self.driver.delete_all_cookies()
+        cookies = self.driver.get_cookies()
 
         #'//*[@id="spaceEventLayer"]/div[1]/a[2]
         pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')

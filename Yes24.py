@@ -19,6 +19,7 @@ class yes24(bookStore):
         super().printFuncInfo(self.yes24_best_phone.__name__, keyword, page, n)
 
         self.driver.get('http://www.yes24.com/')
+        self.driver.delete_all_cookies()
 
         close_popup_btn = self.driver.find_element(By.XPATH, '//*[@id="yesAppPop"]/div/div/div[2]')
         close_popup_btn.click()
