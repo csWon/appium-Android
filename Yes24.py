@@ -6,14 +6,29 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import random
+import datetime
+import time
 
 class yes24(bookStore):
     def __init__(self, driver):
         # bookStore.__init__(self)
         self.driver = driver
+    def doScrollDown(self, whileSeconds):
+        SCROLL_PAUSE_SEC = 1
+        # 스크롤 높이 가져옴
+        last_height = 0#self.driver.execute_script("return document.body.scrollHeight")
+        for i in range(0, whileSeconds):
+            last_height = last_height + 200
+            self.driver.execute_script("window.scrollTo(0, " + str(last_height) + ");")
+            # 1초 대기
+            time.sleep(SCROLL_PAUSE_SEC)
+
 
     def do(self, keyword, page, n, title):
-        self.yes24_best_phone(keyword, page, n, title)
+        try:
+            self.yes24_best_phone(keyword, page, n, title)
+        except Exception as e:
+            print("do exception!! : ", e)
 
     def yes24_best_phone(self, keyword, page, n, title):
         super().printFuncInfo(self.yes24_best_phone.__name__, keyword, page, n)
@@ -30,9 +45,10 @@ class yes24(bookStore):
         super().delay()
 
         fakeKeywords = open('keyword.txt', 'r', encoding='UTF8').read().split('\n')
-        Keyword_3 = random.choices(fakeKeywords, k=0)
+        Keyword_3 = random.choices(fakeKeywords, k=1)
         for fKeyword in Keyword_3:
             try:
+                print(fKeyword)
                 # close_popup_btn = self.driver.find_element(By.XPATH, '//*[@id="yesBotImgPop"]/div/div/div[3]/ul/li[1]/a')
                 # close_popup_btn.click()
                 # super().delay()
@@ -50,36 +66,65 @@ class yes24(bookStore):
                 # document.getElementsByClassName('schBtn')[0].childNodes[0].click()
                 btn = self.driver.find_element(By.ID, 'search_real_search')
                 btn.click()
-                super().delay_10()
+                super().delay()
 
                 # document.getElementsByClassName('yesUI_pagen')[1].children[4].click()
                 # document.getElementsByClassName('gd_name')[10].text
                 targets = self.driver.find_elements(By.CLASS_NAME, 'lnk_item')
-                # targets[10].click()
+
+                # target_image = self.driver.find_element(By.XPATH, '//*[@id="yesSchGList"]/li[2]/div/div[1]/div[1]/span/span/em/img')
+                # target_image_src = target_image.get_attribute('src')
+                #
+                # # 물건이 19금이면 로그인이 필요해서 예외처리 추가
+                # if 'PD_19_L.gif' in target_image_src:
+                #     continue
+                # # targets[10].click()
                 targets[1].click()
+
+                # try:
+                #     self.driver.switchTo().alert();
+                #     self.driver.findElement(By.name, 'OK').click();
+                #     t = self.driver.find_elements(By.ID, 'SMemberID')
+                #     if len(t) != 0:
+                #         continue
+                # except:
+                #     a = 0 # 19금 아닌경우 여기로 빠지고 아래 코드 계속 수행
+
+
+
                 super().delay_n(3)
 
-                # targets = driver.find_elements(By.CLASS_NAME, 'btnC m_size btn_blue')
-                # targets[0].click()
+                # btnDes에 스트링 분철신청 가능 등 문자가 있는경우 예외처리를 위해서 확인
+                flag = False
+                targets = self.driver.find_elements(By.CLASS_NAME, 'btnDes')
+                self.driver.implicitly_wait(5)
+                if len(targets) > 0:
+                    flag = True
 
-                # btns_addcart = self.driver.find_elements(By.CLASS_NAME, 'btn_c btn_blue')
-                # for btn in btns_addcart:
-                #     if btn.text == '카트에 넣기':
-                #         btn.click()
-                #
-                # # btn_addcart = self.driver.find_element(By.XPATH, '//*[@id="payment_button_area"]/div/ul/li[1]/a')
-                #
-                #         super().delay_n(3)
-                #
-                #         # targets = driver.find_elements(By.CLASS_NAME, 'bgYUI btn_popClose')
-                #         # targets = driver.find_elements(By.CLASS_NAME, 'popYUI_close')
-                #         #  targets[4].click()
-                #         btn_addcart_x = self.driver.find_element(By.XPATH, '//*[@id="yesWrap"]/div[7]/div/div/div/div/div[2]/a[2]')
-                #         btn_addcart_x.click()
-                #         super().delay_n(3)
-                #
-                #         self.driver.back()
-                #         super().delay_n(3)
+                try:
+                    btns_addcart = self.driver.find_elements(By.CLASS_NAME, 'btn_c.btn_blue')
+                    for btn in btns_addcart:
+                        if btn.text == '카트에 넣기':
+                            btn.click()
+
+                            super().delay()
+
+                            # targets = driver.find_elements(By.CLASS_NAME, 'bgYUI btn_popClose')
+                            # targets = driver.find_elements(By.CLASS_NAME, 'popYUI_close')
+                            #  targets[4].click()
+
+                            if flag:
+                                btn.click()
+                            btn_addcart_x = self.driver.find_element(By.XPATH, '//*[@id="yesWrap"]/div[7]/div/div/div/div/div[2]/a[2]')
+                            btn_addcart_x.click()
+                            super().delay()
+
+                            self.driver.back()
+                            super().delay_n(3)
+                            break;
+                except:
+                    continue
+
                 self.driver.back()
                 super().delay_n(3)
             except Exception as e:
@@ -98,10 +143,12 @@ class yes24(bookStore):
         for i in range(1, 51):
             # '//*[@id="bestSellerList"]/li[1]/div/div[2]/div[1]'
             # '//*[@id="bestSellerList"]/li[2]/div/div[2]/div[1]'
+            # '//*[@id="bestSellerList"]/li[1]/div/div[2]/div[1]'
+            # '//*[@id="bestSellerList"]/li[1]/div/a'
             product = self.driver.find_element(By.XPATH, '//*[@id="bestSellerList"]/li[' + str(i) + ']/div/div[2]/div[1]')
             if (product.text == title):
                 product = self.driver.find_element(By.XPATH, '//*[@id="bestSellerList"]/li['+str(i)+']/div/a')
-                product_next = self.driver.find_element(By.XPATH, '//*[@id="bestSellerList"]/li[' + str(i+2) + ']/div/a')
+                product_next = self.driver.find_element(By.XPATH, '//*[@id="bestSellerList"]/li[' + str(i+1) + ']/div/a')
                 ActionChains(self.driver).move_to_element(product_next).perform()  # .click().perform()
                 product.click()
                 print('idx : ' + str(i))
@@ -109,7 +156,28 @@ class yes24(bookStore):
                 # logging.info('idx : ' + str(i))
                 # logging.info(self.driver.current_url)
                 # logging.info('clicked title : ' + self.driver.title)
-                super().delay_n(10)
+                # super().delay_n(10)
+                try:
+                    btns_addcart = self.driver.find_elements(By.CLASS_NAME, 'btn_c.btn_blue')
+                    for btn in btns_addcart:
+                        if btn.text == '카트에 넣기':
+                            btn.click()
+
+                            super().delay()
+
+                            # targets = driver.find_elements(By.CLASS_NAME, 'bgYUI btn_popClose')
+                            # targets = driver.find_elements(By.CLASS_NAME, 'popYUI_close')
+                            #  targets[4].click()
+                            btn_addcart_x = self.driver.find_element(By.XPATH, '//*[@id="yesWrap"]/div[7]/div/div/div/div/div[2]/a[2]')
+                            btn_addcart_x.click()
+                            super().delay()
+
+
+
+                            break;
+                except:
+                    return
+                self.doScrollDown(30)
                 # self.driver.implicitly_wait(20)
                 return
 

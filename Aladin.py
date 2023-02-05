@@ -7,6 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import random
 import string
+import time
 
 class aladin(bookStore):
     def __init__(self, driver):
@@ -14,8 +15,19 @@ class aladin(bookStore):
         self.driver = driver
 
     def do(self, keyword, page, n, title):
-        self.aladin_best_phone_v1(keyword, page, n, title)
-
+        try:
+            self.aladin_best_phone_v1(keyword, page, n, title)
+        except Exception as e:
+            print("do exception!! : ", e)
+    def doScrollDown(self, whileSeconds):
+        SCROLL_PAUSE_SEC = 1
+        # 스크롤 높이 가져옴
+        last_height = 0#self.driver.execute_script("return document.body.scrollHeight")
+        for i in range(0, whileSeconds):
+            last_height = last_height + 200
+            self.driver.execute_script("window.scrollTo(0, " + str(last_height) + ");")
+            # 1초 대기
+            time.sleep(SCROLL_PAUSE_SEC)
     def aladin_best_v1(self, keyword, page, n, title):
         super().printFuncInfo(self.aladin_best_v1.__name__, keyword, page, n)
         page = page - 2
@@ -208,7 +220,7 @@ class aladin(bookStore):
                 addCartBtn.click()
 
             except Exception as e:
-                logging.info("loop exception!! : ", e)
+                print("loop exception!! : ", e)
 
         bestbtn = self.driver.find_element(By.XPATH, '//*[@id="re_mallmenu"]/ul/li[3]/div/a/img')
         bestbtn.click()
@@ -261,29 +273,21 @@ class aladin(bookStore):
         self.driver.delete_all_cookies()
         cookies = self.driver.get_cookies()
 
-        #'//*[@id="spaceEventLayer"]/div[1]/a[2]
+        # 광고 팝업 끄기
         pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
         pop_up_close_btn.click()
 
-        # simple_join_btn = self.driver.find_element(By.CLASS_NAME, 'set3m')
-        # simple_join_btn.click()
-
-        # self.simple_join()
-
         fakeKeywords = open('keyword.txt', 'r', encoding='UTF8').read().split('\n')
-        Keyword_3 = random.choices(fakeKeywords, k=2)
-        Keyword_3.append(title)
+        Keyword_3 = random.choices(fakeKeywords, k=1)
+        # Keyword_3.append(title)
         for fKeyword in Keyword_3:
             try:
-                # 책 제목 입력
+                # 책 제목 입력을 위한 검색창 클릭
                 # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
                 search_box = self.driver.find_element(By.ID, 'SearchWordBanner')
-
-                # search_box.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
                 search_box.click()
 
                 search_box2 = self.driver.find_element(By.ID, 'SearchWord')
-
                 search_box2.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
                 search_box2.click()
 
@@ -297,24 +301,28 @@ class aladin(bookStore):
                 btn.click()
                 super().delay_10()
 
-                addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/table/tbody/tr/td[3]/img')
-                addCartBtn.click()
-                super().delay_n(2)
-
-                addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/div[2]/a[1]')
-                addCartBtn.click()
-
+                try:
+                    addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/table/tbody/tr/td[3]/img')
+                    addCartBtn.click()
+                    super().delay_n(2)
+                    addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/div[2]/a[1]')
+                    addCartBtn.click()
+                except Exception as e:
+                    print("do exception!! : ", e)
+                    continue
 
             except Exception as e:
-                logging.info("loop exception!! : ", e)
+                logging.info("keyword loop exception!! : ", e)
 
         homebtn = self.driver.find_element(By.XPATH,'/html/body/div[2]/h1')
         homebtn.click()
         super().delay_n(2)
 
-        pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
-        pop_up_close_btn.click()
-
+        try:
+            pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
+            pop_up_close_btn.click()
+        except:
+            a = 0
         bestbtn = self.driver.find_element(By.XPATH,'//*[@id="welcom_wrap"]/div[9]/div/li[1]')
         bestbtn.click()
         super().delay()
@@ -336,7 +344,8 @@ class aladin(bookStore):
                     print('clicked title : ' + self.driver.title)
                     addCartBtn = self.driver.find_element(By.ID, 'btnAddBasket')
                     addCartBtn.click()
-                    super().delay()
+                    super().delay_n(5)
+                    return;
 
                     # saveBoxBtn = self.driver.find_element(By.ID, 'btn_savebasket')
                     # saveBoxBtn.click()
@@ -362,4 +371,3 @@ class aladin(bookStore):
             nextPageBtn.click()
             super().delay()
 
-        super().delay_n(10)
