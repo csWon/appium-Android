@@ -136,174 +136,83 @@ class kyobo(bookStore):
         page = page - 1
         n = n - 1
         self.driver.get(self.url_k_product)
-        logging.info('start kyobo')
-        print('start kyobo_best_v1')
-        # // 돋보기 눌려서 product.kyobobook.co.kr로 진입
-        # btn = self.driver.find_element(By.CLASS_NAME, 'btn_gnb_search')
-        btn = self.driver.find_element(By.XPATH, '//*[@id="mainDiv"]/header/div[3]/a[1]')
-        btn.click()
-        #
-        # # btn_header_search
-        # btn = driver.find_element(By.CLASS_NAME, 'btn_header_search')
-        # btn.click()
-        #
-        # # // 검색하기 전 단계로 진입하기
-        # search_box = driver.find_element(By.CLASS_NAME, 'btn_header_search')
+        self.driver.implicitly_wait(10)
+        super().delay()
 
-        # search_box = driver.find_element(By.CLASS_NAME, 'ip_gnb_search')
-        # search_box.send_keys('사국지')
+
+        logging.info('start kyobo')
+        # // 돋보기 눌려서 product.kyobobook.co.kr로 진입
+        btn = self.driver.find_element(By.XPATH, '//*[@id="mainDiv"]/header/div[3]/a[1]')
+        btn.send_keys(Keys.ENTER)
+
         fakeKeywords = open('keyword.txt', 'r', encoding='UTF8').read().split('\n')
         Keyword_3 = random.choices(fakeKeywords, k=2)
 
         super().delay()
         for fkeyword in Keyword_3:
              # 검색창 클릭
-             print(fkeyword)
+             print(fkeyword + " searching")
+             self.driver.implicitly_wait(10)
+             super().delay_n(3)
              search_box = self.driver.find_element(By.ID, 'searchKeyword')
              search_box.click()
-             super().delay()
+
+             self.driver.implicitly_wait(10)
+             super().delay_n(2)
              search_box.send_keys(fkeyword)
-             super().delay()
-             btn = self.driver.find_element(By.XPATH, '//*[@id="searchDiv"]/header/div[2]/div/a')
-             btn.click()
-             super().delay()
+             search_box.send_keys(Keys.ENTER)
+             #
+             # self.driver.implicitly_wait(10)
+             # super().delay_n(2)
+             # btn = self.driver.find_element(By.XPATH, '//*[@id="searchDiv"]/header/div[2]/div/a')
+             # btn.send_keys(Keys.ENTER)
+
+             ActionChains(self.driver).scroll_by_amount(0, 223).perform();
+
+             self.driver.implicitly_wait(10)
+             super().delay_n(2)
              btn = self.driver.find_element(By.XPATH, '//*[@id="mainDiv"]/header/div[2]/div/div/button')
              btn.click()
 
-        # driver.get(url_k_product)
         super().delay_n(3)
-        #//*[@id="welcome_header_wrap"]/div[3]/div/div[1]/a
-        # logobtn = self.driver.find_element(By.XPATH, '//*[@id="welcome_header_wrap"]/div[3]/div/div[1]/a')
-        # logobtn.click()
+        self.driver.implicitly_wait(10)
         self.driver.get(super().url_k_product)
-        print("메인 이동")
+
+        self.driver.implicitly_wait(10)
+        ActionChains(self.driver).scroll_by_amount(0, 243).perform();
+
+        best = self.driver.find_element(By.XPATH, '//*[@id="contents"]/div[4]/div[2]/div[1]/div/a/span[1]')
+        best.click()
         super().delay_n(2)
-        s = self.driver.find_element(By.XPATH, '//*[@id="contents"]/div[4]/div[2]/div[1]/div/a/span[1]')
-        s.click()
-        super().delay_n(3)
+        self.driver.implicitly_wait(20)
+        print("베스트 이동")
 
-        # s = driver.find_elements(By.CLASS_NAME, 'prod_info')
         i = 0
-        find_target = 0
-        endflag = False
-        for page in range(2,8):
-            targets = self.driver.find_elements(By.CLASS_NAME, 'prod_info')
-            for target in targets:
-                # logging.info(target.text)
-                i = i + 1
-                if (target.text == title):
-                    find_target = target
-                elif (find_target != 0):
-                    # target.click()
-                    endflag = True
-                    ActionChains(self.driver).move_to_element(target).perform()  # .click().perform()
-                    find_target.click()
-                    logging.info('idx : ' + str(i - 1))
-                    logging.info('clicked title : ' + self.driver.title)
+        isClicked = False
+
+        for page in range(50):
+            prods = self.driver.find_elements(By.CLASS_NAME, "prod_info")
+            ActionChains(self.driver).move_to_element(prods[-2]).perform()
+            j = 0
+
+            for prod in prods[i:]:
+                if (prod.text.startswith(title)):
+                    print('찾았다 : ' + title)
+                    print("순위 :", (i+j))
+                    ActionChains(self.driver).move_to_element(prod).perform()
+                    prod.send_keys(Keys.ENTER)
+                    isClicked = True
                     break
-            if endflag == True:
-                break
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollTop);")
-            # 위쪽
-            # '//*[@id="tabRoot"]/div[2]/div[1]/div/a[2]'
-            # '//*[@id="tabRoot"]/div[2]/div[1]/div/a[3]'
-            # 아래쪽
-            # '//*[@id="tabRoot"]/div[4]/div[2]/div/a[2]'
-            s = self.driver.find_element(By.XPATH, '//*[@id="tabRoot"]/div[2]/div[1]/div/a['+str(page)+']')
-            s.click()
-            super().delay()
-#        '//*[@id="mainDiv"]/main/section[2]'//*[@id="tabRoot"]/div[2]/div[1]/div/a[3]
+                j += 1
+            i = len(prods)-1
 
-
-
-        # for i in range(1,3):
-        #     for j in range(1,11):
-        #         product = driver.find_element(By.XPATH, '//*[@id="tabRoot"]/div[4]/ol['+ str(i) +']/li['+ str(j) +']/div[2]/div[2]/a')
-        #         if(product.text == title):
-        #             product.click()
-        #             print('idx : ' + str((10*(i-1))+j))
-
-        # for i in range(1, 5):
-        #     tryPage = page-1+i
-        #     print("tryPage " + str(tryPage+1))
-        #     btn = driver.find_elements(By.CLASS_NAME, 'btn_page_num')
-        #     btn[tryPage].click()
-        #     delay()
-        #
-        #     # 물건 클릭
-        #     elements = driver.find_elements(By.CLASS_NAME, 'prod_info')
-        #     target = getTargetElement(elements, title)
-        #     if target == 'empty':
-        #         continue
-        #     else:
-        #         print("clickPage" + str(tryPage+1))
-        #         target.click()
-        #         break
-
-        self.driver.implicitly_wait(20)
-        # targetProduct = driver.find_element(By.CLASS_NAME, 'prod_info')
-        # targetProduct = driver.find_elements(By.CLASS_NAME, 'prod_link')
-        # targetProduct[n].click()
-        # driver.find_element_by_xpath('//*[@class="prod_link"]').send_keys(Keys.ENTER)
-        # targetProduct.click()
-        # targetProduct.send_keys(Keys.ENTER)
-        super().delay_n(60)
-
-    def kyobo_v2(self, keyword, page, n, title):
-        super().printFuncInfo(self.kyobo_v2.__name__, keyword, page, n)
-        page = page - 1
-        n = n - 1
-        self.driver.get(super().url_k_product)
-        print('start kyobo')
-        # // 돋보기 눌려서 product.kyobobook.co.kr로 진입
-        # btn = driver.find_element(By.CLASS_NAME, 'btn_gnb_search')
-        # btn.click()
-        #
-        # # btn_header_search
-        # btn = driver.find_element(By.CLASS_NAME, 'btn_header_search')
-        # btn.click()
-        #
-        # # // 검색하기 전 단계로 진입하기
-        # search_box = driver.find_element(By.CLASS_NAME, 'btn_header_search')
-
-        # search_box = driver.find_element(By.CLASS_NAME, 'ip_gnb_search')
-        # search_box.send_keys('사국지')
-        super().delay()
-        # 검색창 클릭
-        search_box = self.driver.find_element(By.ID, 'searchKeyword')
-        search_box.click()
-        super().delay()
-        search_box.send_keys(keyword)
-        super().delay()
-
-        btn = self.driver.find_element(By.CLASS_NAME, 'btn_gnb_search')
-        btn.click()
-        super().delay()
-
-        for i in range(1, 5):
-            tryPage = page - 1 + i
-            print("tryPage " + str(tryPage + 1))
-            btn = self.driver.find_elements(By.CLASS_NAME, 'btn_page_num')
-            btn[tryPage].click()
-            super().delay()
-
-            # 물건 클릭
-            elements = self.driver.find_elements(By.CLASS_NAME, 'prod_info')
-            target = super().getTargetElement(elements, title)
-            if target == 'empty':
-                continue
-            else:
-                print("clickPage" + str(tryPage + 1))
-                target.click()
+            if isClicked == True:
+                super().delay_n(3)
+                self.driver.implicitly_wait(7)
+                basket = self.driver.find_elements(By.XPATH, '//*[@id="basket"]')[0]
+                basket.click()
+                print("장바구니 추가")
+                super().delay_n(2)
                 break
 
-        self.driver.implicitly_wait(20)
-        # targetProduct = driver.find_element(By.CLASS_NAME, 'prod_info')
-        # targetProduct = driver.find_elements(By.CLASS_NAME, 'prod_link')
-        # targetProduct[n].click()
-        # driver.find_element_by_xpath('//*[@class="prod_link"]').send_keys(Keys.ENTER)
-        # targetProduct.click()
-        # targetProduct.send_keys(Keys.ENTER)
-        print(self.driver.title)
-        print(self.driver.current_url)
-        super().delay_n(60)
+        super().delay_n(2)
