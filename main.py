@@ -15,10 +15,12 @@ import string
 import time
 
 
-from datetime import datetime
+import datetime
 import logging
 from Tickets import tickets
 from DriverManager import driverManager
+
+import traceback
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -60,9 +62,10 @@ if __name__ == '__main__':
 
     _tickets = tickets()
     for ticket in _tickets.getTicket():
-        s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        logging.info('timeStamp : ' + s)
-        for i in range(1, 100):
+        # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # logging.info('timeStamp : ' + s)
+        for i in range(1, 500):
+            start = time.time()
             dManager = driverManager()
 
             driver = dManager.open_browser_phone()
@@ -73,19 +76,24 @@ if __name__ == '__main__':
                 n = ticket[3]
                 title = ticket[4]
 
-                logging.info('cycle : ' + str(i))
-                logging.info(driver.title)
-                logging.info(driver.current_url)
+                print('cycle : ' + str(i))
 
                 webPageClass = ticket[0](driver)
                 webPageClass.do(keyword, page, n, title)
 
-                driver.quit()
-                logging.info('------------------------------')
+                #driver.quit()
 
             except Exception as e:
-                logging.info("exception!!! : ", e)
+                # print("exception!!! : ", traceback.format_exc())
+                print("error occured")
                 driver.quit()
+            finally:
+                sec = time.time() - start
+                times = str(datetime.timedelta(seconds=sec)).split(".")
+                times = times[0]
+
+                print("총 걸린시간 : " + times)
+                print('------------------------------')
 
 
 
