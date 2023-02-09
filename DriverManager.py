@@ -95,8 +95,8 @@ class driverManager:
         while True:
             try:
                 self.driver.implicitly_wait(60)
-                self.driver.get('http://20.214.201.213/index.html')
-                time.sleep(3)
+                self.driver.get('http://20.196.196.177/index2.html')
+                time.sleep(5)
             except:
                 self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
                 print("ERROR: Waiting for connection with appium server !!!")
@@ -117,9 +117,7 @@ class driverManager:
         times = str(datetime.timedelta(seconds=sec)).split(".")
         times = times[0]
 
-        print("DEBUG: it takes " + times)
-
-        print('------------------------------')
+        print("connecting time " + times)
 
         return self.driver
 
