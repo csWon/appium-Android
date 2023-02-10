@@ -87,6 +87,7 @@ if __name__ == '__main__':
 
                 # TODO : ranking return 해주세여
                 rank = webPageClass.do(keyword, page, n, title)
+                driver.quit()
 
             except Exception as e:
                 print("exception!!! : ", traceback.format_exc())
