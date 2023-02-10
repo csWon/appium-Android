@@ -14,18 +14,54 @@ import random
 import string
 import time
 
-
+import Worker
 import datetime
 import logging
 from Tickets import tickets
 from DriverManager import driverManager
 
 import traceback
+from multiprocessing import Process, Queue
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
+def work(dc, server_ip):
+    _tickets = tickets()
+    for ticket in _tickets.getTicket():
+        # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # logging.info('timeStamp : ' + s)
+        for i in range(1, 500):
+            start = time.time()
+            dManager = driverManager(dc, server_ip)
+
+            driver = dManager.open_browser_phone()
+
+            try:
+                keyword = ticket[1]
+                page = ticket[2]
+                n = ticket[3]
+                title = ticket[4]
+
+                print('cycle : ' + str(i))
+
+                webPageClass = ticket[0](driver)
+                webPageClass.do(keyword, page, n, title)
+
+                # driver.quit()
+
+            except Exception as e:
+                # print("exception!!! : ", traceback.format_exc())
+                print("error occured")
+                driver.quit()
+            finally:
+                sec = time.time() - start
+                times = str(datetime.timedelta(seconds=sec)).split(".")
+                times = times[0]
+
+                print("총 걸린시간 : " + times)
+                print('------------------------------')
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -52,73 +88,29 @@ if __name__ == '__main__':
     # # # file_handler.setFormatter(formatter)
     # logger.addHandler(file_handler)
 
-    url_ip_check = 'https://ko.infobyip.com/'
-    url_k_product = 'https://product.kyobobook.co.kr/'
-    url_naver = 'https://www.naver.com'
-    url_aladin = 'https://www.aladin.co.kr/'
-    url_ypbook = 'https://www.ypbooks.co.kr/'
+
+    dc = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce0317136d6b60b10c",
+        "browserName": "chrome",
+        "browserVersion": "109.0.5414.117"
+    }
+
+    dc2 = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce05171555816f1b03",
+        "browserName": "chrome",
+        "browserVersion": "109.0.5414.86"
+    }
+
+    th1 = Process(target=work, args=(dc,"127.0.0.1:4723"))
+    # th2 = Process(target=work, args=(dc2,))
+
+    th1.start()
+    # th2.start()
+    th1.join()
+    # th2.join()
 
 
-
-    _tickets = tickets()
-    for ticket in _tickets.getTicket():
-        # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # logging.info('timeStamp : ' + s)
-        for i in range(1, 500):
-            start = time.time()
-            dManager = driverManager()
-
-            driver = dManager.open_browser_phone()
-
-            try:
-                keyword = ticket[1]
-                page = ticket[2]
-                n = ticket[3]
-                title = ticket[4]
-
-                print('cycle : ' + str(i))
-
-                webPageClass = ticket[0](driver)
-                webPageClass.do(keyword, page, n, title)
-
-                #driver.quit()
-
-            except Exception as e:
-                # print("exception!!! : ", traceback.format_exc())
-                print("error occured")
-                driver.quit()
-            finally:
-                sec = time.time() - start
-                times = str(datetime.timedelta(seconds=sec)).split(".")
-                times = times[0]
-
-                print("총 걸린시간 : " + times)
-                print('------------------------------')
-
-
-
-    #
-    #
-    # print_hi('PyCharm')
-    # options = webdriver.ChromeOptions()
-    # options.add_argument()
-    #
-    # dc = {
-    #     "platformName": "Android",
-    #     "platformVersion": "9.0",
-    #     "deviceName": "ce05171555816f1b03",
-    #     "browserName": "chrome",
-    #     "browserVersion": "109.0.5414.86"
-    # }
-    #
-    # driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
-    # driver.get("https://www.findip.kr/")
-    # time.sleep(3)
-    # driver.get("https://www.aladin.co.kr/")
-    #
-    # x_btn = driver.find_element(By.XPATH,'//*[@id="spaceEventLayer"]/div[1]/a[2]')
-    # x_btn.click();
-    # time.sleep(3)
-    # bestbtn = driver.find_element(By.XPATH, '//*[@id="re_mallmenu"]/ul/li[3]/div/a/img')
-    # bestbtn.click()
-    # time.sleep(10)
