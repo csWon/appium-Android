@@ -19,6 +19,7 @@ import datetime
 import logging
 from Tickets import tickets
 from DriverManager import driverManager
+from LoggingManager import loggingManager
 
 import traceback
 
@@ -67,8 +68,12 @@ if __name__ == '__main__':
         for i in range(1, 500):
             start = time.time()
             dManager = driverManager()
+            logger = loggingManager()
 
             driver = dManager.open_browser_phone()
+
+            status = 'S'
+            errorMsg = ''
 
             try:
                 keyword = ticket[1]
@@ -79,20 +84,33 @@ if __name__ == '__main__':
                 print('cycle : ' + str(i))
 
                 webPageClass = ticket[0](driver)
-                webPageClass.do(keyword, page, n, title)
 
-                #driver.quit()
+                # TODO : ranking return 해주세여
+                rank = webPageClass.do(keyword, page, n, title)
 
             except Exception as e:
-                # print("exception!!! : ", traceback.format_exc())
+                print("exception!!! : ", traceback.format_exc())
                 print("error occured")
                 driver.quit()
+                status = 'F'
+                rank = 0
+                errorMsg = traceback.format_exception_only(e)
+
             finally:
                 sec = time.time() - start
+                print (sec)
                 times = str(datetime.timedelta(seconds=sec)).split(".")
                 times = times[0]
 
                 print("총 걸린시간 : " + times)
+
+                logger.logging(site=ticket[0].__name__,
+                               ticketNm=ticket[4],
+                               deviceId=driverManager.dc.get("deviceName"), # TODO : multi 가능하게 한 뒤 device name 넣어주세여
+                               status=status,
+                               rank=rank,
+                               loadTime=sec,
+                               errorMsg=errorMsg);
                 print('------------------------------')
 
 

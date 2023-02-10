@@ -22,6 +22,16 @@ class driverManager:
     # 'Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.79 Mobile Safari/537.36 EdgA/107.0.1418.62',
     # 'Mozilla/5.0 (Linux; Android 10; ONEPLUS A6003) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.79 Mobile Safari/537.36 EdgA/107.0.1418.62'
 
+    dc = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce10171ab8ac5f3e04",
+        # "deviceName": "ce05171555816f1b03",
+        "browserName": "chrome",
+        "browserVersion": "109.0.5414.86"
+        # "browserVersion": "109.0.5414.117"
+    }
+
     def get_ua(self):
         ua_list = [
                     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
@@ -42,15 +52,7 @@ class driverManager:
         import time
         from selenium.webdriver.common.by import By
 
-        dc = {
-            "platformName": "Android",
-            "platformVersion": "9.0",
-            "deviceName": "ce10171ab8ac5f3e04",
-            #"deviceName": "ce05171555816f1b03",
-            "browserName": "chrome",
-            "browserVersion":"109.0.5414.86"
-            # "browserVersion": "109.0.5414.117"
-        }
+
 
         # dc = {}
         # dc["platformName"] = "Android"
@@ -73,7 +75,7 @@ class driverManager:
         # self.driver = webdriver.Chrome(executable_path='C:\chromedriver\chromedriver.exe', options=chrome_options)
         # self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
 
-        self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
+        self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", self.dc)
         # driver.get('https://www.aladin.co.kr/')
         start = time.time()
 
@@ -98,7 +100,7 @@ class driverManager:
                 self.driver.get('http://20.196.196.177/index2.html')
                 time.sleep(5)
             except:
-                self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", dc)
+                self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", self.dc)
                 print("ERROR: Waiting for connection with appium server !!!")
                 time.sleep(1)
             else:
