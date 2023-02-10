@@ -282,6 +282,7 @@ class aladin(bookStore):
         # Keyword_3.append(title)
         for fKeyword in Keyword_3:
             try:
+                print(fKeyword)
                 # 책 제목 입력을 위한 검색창 클릭
                 # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
                 search_box = self.driver.find_element(By.ID, 'SearchWordBanner')
@@ -338,6 +339,7 @@ class aladin(bookStore):
                 if title in target.text:
                     endflag = True
                     target.click()
+                    print('idx : ' + str(i))
                     logging.info('idx : ' + str(i))
                     logging.info(self.driver.current_url)
                     logging.info('clicked title : ' + self.driver.title)
