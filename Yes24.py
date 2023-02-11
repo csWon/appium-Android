@@ -33,6 +33,7 @@ class yes24(bookStore):
     def yes24_best_phone(self, keyword, page, n, title):
         super().printFuncInfo(self.yes24_best_phone.__name__, keyword, page, n)
 
+
         self.driver.get('http://www.yes24.com/')
         self.driver.delete_all_cookies()
 
