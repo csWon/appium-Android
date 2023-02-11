@@ -60,6 +60,8 @@ class driverManager:
         import time
         from selenium.webdriver.common.by import By
 
+
+
         # dc = {}
         # dc["platformName"] = "Android"
         # dc["platformVersion"] = "9.0"
@@ -103,9 +105,9 @@ class driverManager:
         while True:
             try:
                 self.driver.implicitly_wait(60)
-                self.driver.get('http://20.214.201.213/index.html')
+                self.driver.get('http://20.196.196.177/index2.html')
                 # self.driver.get('http://www.naver.com')
-                time.sleep(3)
+                time.sleep(5)
             except:
                 self.driver = webdriver.Remote("http://" + self.server_ip + "/wd/hub", self.dc, options=chrome_options)
                 print("ERROR: Waiting for connection with appium server !!!")
@@ -126,9 +128,7 @@ class driverManager:
         times = str(datetime.timedelta(seconds=sec)).split(".")
         times = times[0]
 
-        print("DEBUG: it takes " + times)
-
-        print('------------------------------')
+        print("connecting time " + times)
 
         return self.driver
 
