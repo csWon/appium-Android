@@ -35,11 +35,13 @@ def work(dc, server_ip):
         # logging.info('timeStamp : ' + s)
         for i in range(1, 500):
             start = time.time()
-            dManager = driverManager()
+            dManager = driverManager(dc, server_ip)
             logger = loggingManager()
 
             driver = dManager.open_browser_phone()
 
+            status = 'S'
+            errorMsg = ''
             try:
                 keyword = ticket[1]
                 page = ticket[2]
@@ -72,7 +74,7 @@ def work(dc, server_ip):
 
                 logger.logging(site=ticket[0].__name__,
                                ticketNm=ticket[4],
-                               deviceId=driverManager.dc.get("deviceName"), # TODO : multi 가능하게 한 뒤 device name 넣어주세여
+                               deviceId=dManager.dc.get("deviceName"), # TODO : multi 가능하게 한 뒤 device name 넣어주세여
                                status=status,
                                rank=rank,
                                loadTime=sec,
@@ -109,6 +111,7 @@ if __name__ == '__main__':
         "platformName": "Android",
         "platformVersion": "9.0",
         "deviceName": "ce0317136d6b60b10c",
+        "udid": "ce0317136d6b60b10c",
         "browserName": "chrome",
         "browserVersion": "109.0.5414.117"
     }
@@ -117,16 +120,17 @@ if __name__ == '__main__':
         "platformName": "Android",
         "platformVersion": "9.0",
         "deviceName": "ce05171555816f1b03",
+        "udid": "ce05171555816f1b03",
         "browserName": "chrome",
         "browserVersion": "109.0.5414.86"
     }
 
     th1 = Process(target=work, args=(dc,"127.0.0.1:4723"))
-    # th2 = Process(target=work, args=(dc2,))
-
     th1.start()
-    # th2.start()
     th1.join()
+
+    # th2 = Process(target=work, args=(dc2,"127.0.0.1:4724"))
+    # th2.start()
     # th2.join()
 
 
