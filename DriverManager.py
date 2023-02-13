@@ -107,6 +107,7 @@ class driverManager:
                 self.driver.implicitly_wait(60)
                 self.driver.get('http://20.196.196.177/index2.html')
                 # self.driver.get('http://www.naver.com')
+                self.driver.implicitly_wait(10)
                 time.sleep(5)
             except:
                 self.driver = webdriver.Remote("http://" + self.server_ip + "/wd/hub", self.dc, options=chrome_options)
