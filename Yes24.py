@@ -13,6 +13,7 @@ class yes24(bookStore):
     def __init__(self, driver):
         # bookStore.__init__(self)
         self.driver = driver
+        self.rank = 0
     def doScrollDown(self, whileSeconds):
         SCROLL_PAUSE_SEC = 1
         # 스크롤 높이 가져옴
@@ -25,10 +26,10 @@ class yes24(bookStore):
 
 
     def do(self, keyword, page, n, title):
-        try:
-            self.yes24_best_phone(keyword, page, n, title)
-        except Exception as e:
-            print("do exception!! : ", e)
+        # try:
+        return self.yes24_best_phone(keyword, page, n, title)
+        # except Exception as e:
+        #     print("do exception!! : ", e)
 
     def yes24_best_phone(self, keyword, page, n, title):
         super().printFuncInfo(self.yes24_best_phone.__name__, keyword, page, n)
@@ -153,6 +154,7 @@ class yes24(bookStore):
                 ActionChains(self.driver).move_to_element(product_next).perform()  # .click().perform()
                 product.click()
                 print('idx : ' + str(i))
+                self.rank = i
                 print('clicked title : ' + self.driver.title)
                 # logging.info('idx : ' + str(i))
                 # logging.info(self.driver.current_url)
@@ -173,15 +175,14 @@ class yes24(bookStore):
                             btn_addcart_x.click()
                             super().delay()
 
-
-
                             break;
                 except:
-                    return
+                    return self.rank
                 self.doScrollDown(30)
-                # self.driver.implicitly_wait(20)
-                return
 
+                return self.rank
+
+        return self.rank
         # nextPage = self.driver.find_element(By.XPATH, '//*[@id="bestSeller50More"]/a')
         # nextPage.click()
 
