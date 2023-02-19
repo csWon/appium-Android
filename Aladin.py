@@ -13,12 +13,13 @@ class aladin(bookStore):
     def __init__(self, driver):
         # bookStore.__init__(self)
         self.driver = driver
+        self.rank = 0
 
     def do(self, keyword, page, n, title):
-        try:
-            self.aladin_best_phone_v1(keyword, page, n, title)
-        except Exception as e:
-            print("do exception!! : ", e)
+        # try:
+        return self.aladin_best_phone_v1(keyword, page, n, title)
+        # except Exception as e:
+        #     print("do exception!! : ", e)
     def doScrollDown(self, whileSeconds):
         SCROLL_PAUSE_SEC = 1
         # 스크롤 높이 가져옴
@@ -262,18 +263,82 @@ class aladin(bookStore):
 
         super().delay_n(60)
 
+    def aladin_login(self):
+        menuBtn = self.driver.find_element(By.XPATH, '//*[@id="welcom_wrap"]/div[2]/div[2]/a')
+        menuBtn.click()
+        super().delay()
+
+        joinBtn =  self.driver.find_element(By.XPATH, '//*[@id="aside_top"]/div/div[2]')
+        joinBtn.click()
+        super().delay()
+
+        checkAcceptAllBtn = self.driver.find_element(By.XPATH, '//*[@id="join_content_in"]/div[1]/div/div[1]/div[3]/div/ul/li/span/label')
+        checkAcceptAllBtn.click()
+        super().delay()
+
+        nextBtn = self.driver.find_element(By.ID, 'btnAgree')
+        nextBtn.click()
+        super().delay()
+
+        CustId = string.ascii_lowercase
+        CustId = ''.join(random.choice(CustId) for i in range(10))
+        self.inputTextBox('CustId', CustId)
+        super().delay()
+
+        pw_string  = string.ascii_lowercase
+        pw_string = ''.join(random.choice(pw_string) for i in range(5))
+        pw_digit = string.digits
+        pw_digit = ''.join(random.choice(pw_digit) for i in range(5))
+        self.inputTextBox('Password', pw_string + str(pw_digit))
+        super().delay()
+        self.inputTextBox('PasswordVerify', pw_string + str(pw_digit))
+        super().delay()
+
+        nextBtn2 = self.driver.find_element(By.ID, 'btnNext_2')
+        nextBtn2.click()
+        super().delay()
+
+        names = open('nameDB.txt', 'r', encoding='UTF8').read().split('\n')
+        nm = random.choices(names, k=1)
+        self.inputTextBox('CustomerName', nm)
+        super().delay()
+
+        email = string.ascii_lowercase
+        email = ''.join(random.choice(email) for i in range(10))
+        self.inputTextBox('Email', email+'@naver.com')
+        super().delay()
+
+        # self.inputTextBox('EmailDomainText', 'naver.com')
+
+
+        hp2 = string.digits
+        hp2 = ''.join(random.choice(hp2) for i in range(4))
+        hp3 = string.digits
+        hp3 = ''.join(random.choice(hp3) for i in range(4))
+        self.inputTextBox('cellPhoneNo', '010' + hp2 + hp3)
+        super().delay()
+
+        join_btn = self.driver.find_element(By.ID, 'btnJoin')
+        join_btn.click()
+        super().delay()
+
+        go_to_home_btn = self.driver.find_element(By.XPATH, '//*[@id="join_content_in"]/div[7]/div')
+        go_to_home_btn.click()
+        super().delay()
 
     def aladin_best_phone_v1(self, keyword, page, n, title):
         super().printFuncInfo(self.aladin_best_phone_v1.__name__, keyword, page, n)
         page = page - 2
         n = n - 1
 
-        self.driver.get(super().url_aladin)
-        cookies = self.driver.get_cookies()
-        self.driver.delete_all_cookies()
-        cookies = self.driver.get_cookies()
+        self.driver.get(self.url_aladin)
 
         # 광고 팝업 끄기
+        pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
+        pop_up_close_btn.click()
+
+        self.aladin_login()
+
         pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
         pop_up_close_btn.click()
 
@@ -339,6 +404,7 @@ class aladin(bookStore):
                 if title in target.text:
                     endflag = True
                     target.click()
+                    self.rank = (_page-2)*50 + i
                     print('idx : ' + str(i))
                     logging.info('idx : ' + str(i))
                     logging.info(self.driver.current_url)
@@ -347,7 +413,7 @@ class aladin(bookStore):
                     addCartBtn = self.driver.find_element(By.ID, 'btnAddBasket')
                     addCartBtn.click()
                     super().delay_n(5)
-                    return;
+                    return self.rank
 
                     # saveBoxBtn = self.driver.find_element(By.ID, 'btn_savebasket')
                     # saveBoxBtn.click()
