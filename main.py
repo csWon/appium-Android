@@ -26,6 +26,7 @@ from multiprocessing import Process, Queue
 
 import unittest
 
+import yaml
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -58,11 +59,13 @@ def work(dc, server_ip):
                 # TODO : ranking return 해주세여
                 rank = webPageClass.do(keyword, page, n, title)
                 driver.quit()
+                driver.__exit__()
 
             except Exception as e:
                 print("exception!!! : ", traceback.format_exc())
                 print("error occured")
                 driver.quit()
+                driver.__exit__()
                 status = 'F'
                 rank = 0
                 errorMsg = traceback.format_exception_only(e)
@@ -82,6 +85,9 @@ def work(dc, server_ip):
                                rank=rank,
                                loadTime=sec,
                                errorMsg=errorMsg);
+                driver.close()
+                driver.stop_client()
+
                 print('------------------------------')
 
 # Press the green button in the gutter to run the script.
@@ -137,62 +143,23 @@ if __name__ == '__main__':
     # # # file_handler.setFormatter(formatter)
     # logger.addHandler(file_handler)
 
-    dc1 = {
-        "platformName": "Android",
-        "platformVersion": "9.0",
-        "deviceName": "ce0317136d6b60b10c",
-        "udid": "ce0317136d6b60b10c",
-        "browserName": "chrome",
-        "browserVersion": "109.0.5414.117"
-    }
+    # deviceInfo.yml에서 디바이스 정보 파싱
+    with open('deviceInfo.yml') as f:
+        deviceInfo = yaml.load(f, Loader=yaml.FullLoader)
 
-    dc2 = {
-        "platformName": "Android",
-        "platformVersion": "9.0",
-        "deviceName": "ce05171555816f1b03",
-        "udid": "ce05171555816f1b03",
-        "browserName": "chrome",
-        "browserVersion": "109.0.5414.86"
-    }
+    deviceInfoLength = len(deviceInfo['device'].items())
 
-    dc3 = {
-        "platformName": "Android",
-        "platformVersion": "9.0",
-        "deviceName": "ce051715544da4e30d",
-        "udid": "ce051715544da4e30d",
-        "browserName": "chrome",
-        "browserVersion": "104.0.5112.97"
-    }
-    # 110.0.5481
-    suite1 = unittest.TestSuite()
-    suite1.addTest(Worker.worker('Do', dc1, '127.0.0.1:4733'))
+    port = 4721
+    suiteArr = []
 
-    suite2 = unittest.TestSuite()
-    # suite2.addTest(AndroidSampleTest('test_for_android', dc2, '127.0.0.1:4726'))
-    suite2.addTest(Worker.worker('Do', dc2, '127.0.0.1:4743'))
+    for k, v in deviceInfo['device'].items():
+        suite = unittest.TestSuite()
+        suite.addTest(Worker.worker('Do', v, '127.0.0.1:'+str(port)))
+        suiteArr.append(suite)
+        port += 1
 
-    # suite3 = unittest.TestSuite()
-    # suite3.addTest(Worker.worker('Do', dc3, '127.0.0.1:4727'))
-    # unittest.TextTestRunner(verbosity=2).run(suite2)
     import multiprocessing
 
-    with multiprocessing.Pool(processes=2) as p:
-        p.map(func=tmp, iterable=[ suite1, suite2])
-
-
-    #
-    # import multiprocessing
-    #
-    # with multiprocessing.Pool(processes=2) as p:
-    #     p.map(func=tmp, iterable=[suite2, suite1])
-    #
-    # th1 = Process(target=work, args=(dc,"127.0.0.1:4723"))
-    # th2 = Process(target=work, args=(dc2, "127.0.0.1:4724"))
-    #
-    # th1.start()
-    # th2.start()
-    #
-    # th1.join()
-    # th2.join()
-
+    with multiprocessing.Pool(processes=deviceInfoLength) as p:
+        p.map(func=tmp, iterable=suiteArr)
 
