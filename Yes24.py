@@ -14,6 +14,8 @@ class yes24(bookStore):
         # bookStore.__init__(self)
         self.driver = driver
         self.rank = 0
+        self.doFunctionList = [self.yes24_best_phone,
+                               ]
     def doScrollDown(self, whileSeconds):
         SCROLL_PAUSE_SEC = 1
         # 스크롤 높이 가져옴
@@ -24,12 +26,8 @@ class yes24(bookStore):
             # 1초 대기
             time.sleep(SCROLL_PAUSE_SEC)
 
-
-    def do(self, keyword, page, n, title):
-        # try:
-        return self.yes24_best_phone(keyword, page, n, title)
-        # except Exception as e:
-        #     print("do exception!! : ", e)
+    def do(self, keyword, page, n, title, doIdx):
+        return self.doFunctionList[doIdx](keyword, page, n, title)
 
     def yes24_best_phone(self, keyword, page, n, title):
         super().printFuncInfo(self.yes24_best_phone.__name__, keyword, page, n)

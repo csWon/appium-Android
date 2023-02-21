@@ -14,10 +14,12 @@ class aladin(bookStore):
         # bookStore.__init__(self)
         self.driver = driver
         self.rank = 0
+        self.doFunctionList = [self.aladin_best_phone_v1,
+                           ]
 
-    def do(self, keyword, page, n, title):
+    def do(self, keyword, page, n, title, doIdx):
         # try:
-        return self.aladin_best_phone_v1(keyword, page, n, title)
+        return self.doFunctionList[doIdx](keyword, page, n, title)
         # except Exception as e:
         #     print("do exception!! : ", e)
     def doScrollDown(self, whileSeconds):
@@ -404,7 +406,7 @@ class aladin(bookStore):
                 if title in target.text:
                     endflag = True
                     target.click()
-                    self.rank = (_page-2)*50 + i
+                    self.rank = i
                     print('idx : ' + str(i))
                     logging.info('idx : ' + str(i))
                     logging.info(self.driver.current_url)

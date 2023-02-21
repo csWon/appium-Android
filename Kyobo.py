@@ -11,9 +11,11 @@ class kyobo(bookStore):
     def __init__(self, driver):
         # bookStore.__init__(self)
         self.driver = driver
+        self.doFunctionList = [self.kyobo_best_v1,
+                               ]
 
-    def do(self, keyword, page, n, title):
-        return self.kyobo_best_v1(keyword, page, n, title)
+    def do(self, keyword, page, n, title, doIdx):
+        return self.doFunctionList[doIdx](keyword, page, n, title)
 
     def kyobo_best_v1(self, keyword, page, n, title):
         rank = 1;
