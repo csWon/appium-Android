@@ -1,6 +1,6 @@
 import time
 import datetime
-from Tickets import tickets
+from Tickets import ticketManager
 from DriverManager import driverManager
 import unittest
 from LoggingManager import loggingManager
@@ -47,9 +47,9 @@ class worker(unittest.TestCase):
 
                     print('cycle : ' + str(i))
 
-                    webPageClass = ticket[0](self.driver)
+                    publisherClass = ticket[0](self.driver)
 
-                    rank = webPageClass.do(keyword, page, n, title, doIdx)
+                    rank = publisherClass.do(keyword, page, n, title, doIdx)
                     self.driver.quit()
 
                 except Exception as e:
