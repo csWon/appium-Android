@@ -31,111 +31,18 @@ def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
-def work(dc, server_ip):
-    _tickets = tickets()
-    for ticket in _tickets.getTicket():
-        # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # logging.info('timeStamp : ' + s)
-        for i in range(1, 500):
-            start = time.time()
-            dManager = driverManager(dc, server_ip)
-            logger = loggingManager()
 
-            driver = dManager.open_browser_phone()
-
-            status = 'S'
-            errorMsg = ''
-            try:
-                keyword = ticket[1]
-                page = ticket[2]
-                n = ticket[3]
-                title = ticket[4]
-
-                print('cycle : ' + str(i))
-
-                webPageClass = ticket[0](driver)
-
-                # TODO : ranking return 해주세여
-                rank = webPageClass.do(keyword, page, n, title)
-                driver.quit()
-
-            except Exception as e:
-                print("exception!!! : ", traceback.format_exc())
-                print("error occured")
-                driver.quit()
-                status = 'F'
-                rank = 0
-                errorMsg = traceback.format_exception_only(e)
-
-            finally:
-                sec = time.time() - start
-                print (sec)
-                times = str(datetime.timedelta(seconds=sec)).split(".")
-                times = times[0]
-
-                print("총 걸린시간 : " + times)
-
-                logger.logging(site=ticket[0].__name__,
-                               ticketNm=ticket[4],
-                               deviceId=dManager.dc.get("deviceName"), # TODO : multi 가능하게 한 뒤 device name 넣어주세여
-                               status=status,
-                               rank=rank,
-                               loadTime=sec,
-                               errorMsg=errorMsg);
-                print('------------------------------')
-
-# Press the green button in the gutter to run the script.
-
-
-class AndroidSampleTest(unittest.TestCase):
-    def __init__(self, method_name, dc, server_ip):
-        super(AndroidSampleTest, self).__init__(method_name)
-        self.desired_caps = dc
-        self.server_ip = server_ip
-
-    def setUp(self):
-        # desired_caps = dc.copy()
-        # desired_caps['deviceName'] = self.device_name
-        # desired_caps['platformVersion'] = self.platform_ver
-        dManager = driverManager(self.desired_caps, self.server_ip)
-        self.driver = dManager.open_browser_phone()
-        # self.driver = webdriver.Remote('http://127.0.0.1:{}/wd/hub'.format(self.portNum), self.desired_caps)
-        # self.driver.get('https://www.naver.com/')
-
-    def tearDown(self):
-        self.driver.quit()
-
-    def test_for_android(self):
-        self.driver.get('https://www.naver.com/')
-        # assert el.text == 'Settings'
 
 def tmp(suite):
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 
 if __name__ == '__main__':
-    # logger = logging.getLogger()
-    # #
-    # # # 로그의 출력 기준 설정
-    # logger.setLevel(logging.INFO)
-    # #
-    # # # log 출력 형식
-    # # # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    # #
-    # # # log 출력
-    # stream_handler = logging.StreamHandler()
-    # # # stream_handler.setFormatter(formatter)
-    # logger.addHandler(stream_handler)
-    #
-    # s = datetime.now().strftime('%Y-%m-%d_%Hh%Mm%Ss')
-    # logfileName = 'log_' + s + '.log'
-    # # logging.basicConfig(filename='./logs/'+logfileName, level=logging.INFO)
-    # # logging.info('startTime : ' + s)
-    #
-    # # log를 파일에 출력
-    # file_handler = logging.FileHandler('./logs/' + logfileName)
-    # # # file_handler.setFormatter(formatter)
-    # logger.addHandler(file_handler)
+    # ce0317136d6b60b10c
+    # ce05171555816f1b03
+    # ce0517155912102e01
+    # ce051715544da4e30d
+    # ce0817180bec302b0c
 
     dc1 = {
         "platformName": "Android",
@@ -161,24 +68,77 @@ if __name__ == '__main__':
         "deviceName": "ce051715544da4e30d",
         "udid": "ce051715544da4e30d",
         "browserName": "chrome",
-        "browserVersion": "104.0.5112.97"
+        "browserVersion": "109.0.5414.117"
     }
+
+    dc4 = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce0817180bec302b0c",
+        "udid": "ce0817180bec302b0c",
+        "browserName": "chrome",
+        "browserVersion": "110.0.5481.65"
+    }
+
+    dc5 = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce0517155912102e01",
+        "udid": "ce0517155912102e01",
+        "browserName": "chrome",
+        "browserVersion": "109.0.5414.117"
+    }
+
+    dc6 = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce061716d834ec260d",
+        "udid": "ce061716d834ec260d",
+        "browserName": "chrome",
+        "browserVersion": "109.0.5414.117"
+    }
+
+    dc7 = {
+        "platformName": "Android",
+        "platformVersion": "9.0",
+        "deviceName": "ce091719ead6de2902",
+        "udid": "ce091719ead6de2902",
+        "browserName": "chrome",
+        "browserVersion": "109.0.5414.117"
+    }
+
+
     # 110.0.5481
     suite1 = unittest.TestSuite()
-    suite1.addTest(Worker.worker('Do', dc1, '127.0.0.1:4733'))
+    suite1.addTest(Worker.worker('Do', dc1, '127.0.0.1:4723'))
 
     suite2 = unittest.TestSuite()
-    # suite2.addTest(AndroidSampleTest('test_for_android', dc2, '127.0.0.1:4726'))
-    suite2.addTest(Worker.worker('Do', dc2, '127.0.0.1:4743'))
+    suite2.addTest(Worker.worker('Do', dc2, '127.0.0.1:4724'))
 
-    # suite3 = unittest.TestSuite()
-    # suite3.addTest(Worker.worker('Do', dc3, '127.0.0.1:4727'))
-    # unittest.TextTestRunner(verbosity=2).run(suite2)
+    suite3 = unittest.TestSuite()
+    suite3.addTest(Worker.worker('Do', dc3, '127.0.0.1:4725'))
+
+    suite4 = unittest.TestSuite()
+    suite4.addTest(Worker.worker('Do', dc4, '127.0.0.1:4726'))
+
+    suite5 = unittest.TestSuite()
+    suite5.addTest(Worker.worker('Do', dc5, '127.0.0.1:4727'))
+
+    suite6 = unittest.TestSuite()
+    suite6.addTest(Worker.worker('Do', dc6, '127.0.0.1:4728'))
+
+    suite7 = unittest.TestSuite()
+    suite7.addTest(Worker.worker('Do', dc7, '127.0.0.1:4729'))
+
+    # suite_test = unittest.TestSuite()
+    # suite_test.addTest(Worker.worker('Do', dc4_test, '127.0.0.1:4730'))
+
+
     import multiprocessing
 
-    with multiprocessing.Pool(processes=2) as p:
-        p.map(func=tmp, iterable=[ suite1, suite2])
-
+    with multiprocessing.Pool(processes=6) as p:
+        p.map(func=tmp, iterable=[ suite1, suite2, suite3, suite4, suite5, suite6])
+        # p.map(func=tmp, iterable=[suite6])
 
     #
     # import multiprocessing
