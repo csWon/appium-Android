@@ -1,0 +1,22 @@
+device:
+  dc1:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce04171460d730dd0c"
+    "udid": "ce04171460d730dd0c"
+    "browserName": "chrome"
+    "browserVersion": "110.0.5481.64"
+  dc2:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce10171ab8ac5f3e04"
+    "udid": "ce10171ab8ac5f3e04"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
+  dc3:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce12160cc35a722e05"
+    "udid": "ce12160cc35a722e05"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
