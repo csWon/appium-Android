@@ -7,12 +7,13 @@ from LoggingManager import loggingManager
 import traceback
 
 class worker(unittest.TestCase):
-    def __init__(self, method_name, dc, server_ip):
+    def __init__(self, method_name, dc, server_ip, tickets):
         super(worker, self).__init__(method_name)
         self.dc = dc
         self.server_ip = server_ip
         self.dManager = driverManager(self.dc, self.server_ip)
         self.driver = ''
+        self.tickets = tickets
 
     def setUp(self):
         self.do_nothing = 0
@@ -25,8 +26,8 @@ class worker(unittest.TestCase):
         url_naver = 'https://www.naver.com'
         url_aladin = 'https://www.aladin.co.kr/'
         url_ypbook = 'https://www.ypbooks.co.kr/'
-        _tickets = tickets()
-        for ticket in _tickets.getTicket():
+        # _tickets = tickets()
+        for ticket in self.tickets:
             # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             # logging.info('timeStamp : ' + s)
             for i in range(1, 500):
@@ -42,13 +43,13 @@ class worker(unittest.TestCase):
                     page = ticket[2]
                     n = ticket[3]
                     title = ticket[4]
+                    doIdx = ticket[5]
 
                     print('cycle : ' + str(i))
 
                     webPageClass = ticket[0](self.driver)
 
-                    # TODO : ranking return 해주세여
-                    rank = webPageClass.do(keyword, page, n, title)
+                    rank = webPageClass.do(keyword, page, n, title, doIdx)
                     self.driver.quit()
 
                 except Exception as e:
@@ -69,7 +70,7 @@ class worker(unittest.TestCase):
 
                     logger.logging(site=ticket[0].__name__,
                                    ticketNm=ticket[4],
-                                   deviceId=self.dManager.dc.get("deviceName"),  # TODO : multi 가능하게 한 뒤 device name 넣어주세여
+                                   deviceId=self.dManager.dc.get("deviceName"),
                                    status=status,
                                    rank=rank,
                                    loadTime=sec,
