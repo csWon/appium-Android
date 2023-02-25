@@ -26,11 +26,11 @@ class worker(unittest.TestCase):
         url_naver = 'https://www.naver.com'
         url_aladin = 'https://www.aladin.co.kr/'
         url_ypbook = 'https://www.ypbooks.co.kr/'
-        # _tickets = tickets()
+
         for ticket in self.tickets:
             # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             # logging.info('timeStamp : ' + s)
-            for i in range(1, 500):
+            for i in range(1, 60):
                 start = time.time()
 
                 logger = loggingManager()
@@ -69,7 +69,7 @@ class worker(unittest.TestCase):
                     print("총 걸린시간 : " + times)
 
                     logger.logging(site=ticket[0].__name__,
-                                   ticketNm=ticket[4],
+                                   ticketNm=ticket[4].replace(" ", "_"),
                                    deviceId=self.dManager.dc.get("deviceName"),
                                    status=status,
                                    rank=rank,
