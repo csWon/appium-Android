@@ -69,7 +69,7 @@ class worker(unittest.TestCase):
                     print("총 걸린시간 : " + times)
 
                     logger.logging(site=ticket[0].__name__,
-                                   ticketNm=ticket[4],
+                                   ticketNm=ticket[4].replace(" ", "_"),
                                    deviceId=self.dManager.dc.get("deviceName"),
                                    status=status,
                                    rank=rank,
