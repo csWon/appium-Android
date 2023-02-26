@@ -74,5 +74,6 @@ class worker(unittest.TestCase):
                                    status=status,
                                    rank=rank,
                                    loadTime=sec,
+                                   ip=self.dManager.client_ip,
                                    errorMsg=errorMsg);
                     print('------------------------------')

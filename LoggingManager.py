@@ -4,7 +4,7 @@ import traceback
 
 class loggingManager:
     url = 'http://20.196.196.177:8081/dnc/log/addLog.do'
-    def logging(self, site, ticketNm, deviceId, status, rank, loadTime, errorMsg):
+    def logging(self, site, ticketNm, deviceId, status, rank, loadTime, ip, errorMsg):
         data = {
             "site": site,
             "ticketNm": ticketNm,
@@ -12,6 +12,7 @@ class loggingManager:
             "status": status,
             "rank": rank,
             "loadTime": loadTime,
+            "ip": ip,
             "errorMsg": errorMsg
         }
         response = self.web_request(method_name='POST', url=self.url, dict_data=data, is_urlencoded=True);
