@@ -108,13 +108,27 @@ class driverManager:
                 self.driver.get('http://20.196.196.177/index2.html')
                 # self.driver.get('http://www.naver.com')
                 self.driver.implicitly_wait(10)
-                time.sleep(5)
+                time.sleep(6)
 
                 self.client_ip = self.driver.find_element(By.ID, 'ip').text;
-                print(self.client_ip)
+                print(self.driver.find_element(By.ID, 'call').text)
+
+                if self.driver.find_element(By.ID, 'call').text != "0":
+                    self.driver.execute_script('mobile: shell', {
+                        'command': 'svc',
+                        'args': ['data', 'disable'],
+                        'timeout': 5000
+                    })
+                    self.driver.execute_script('mobile: shell', {
+                        'command': 'svc',
+                        'args': ['data', 'enable'],
+                        'timeout': 5000
+                    })
+                    print('ip가 중복되었습니다.', self.client_ip)
+                    raise Exception('ip가 중복되었습니다.')
+
             except:
                 self.driver = webdriver.Remote("http://" + self.server_ip + "/wd/hub", self.dc, options=chrome_options)
-                print("ERROR: Waiting for connection with appium server !!!")
                 time.sleep(1)
             else:
                 break
