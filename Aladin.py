@@ -15,11 +15,15 @@ class aladin(bookStore):
         self.driver = driver
         self.rank = 0
         self.doFunctionList = [self.aladin_best_phone_v1,
+                               self.aladin_best_phone_v2,
+                               self.aladin_best_phone_v3,
                            ]
+        self.driver.get(self.url_aladin)
 
     def do(self, keyword, page, n, title, doIdx):
         # try:
-        return self.doFunctionList[doIdx](keyword, page, n, title)
+        self.doFunctionList[doIdx](keyword, page, n, title)
+        return self.rank
         # except Exception as e:
         #     print("do exception!! : ", e)
     def doScrollDown(self, whileSeconds):
@@ -330,10 +334,6 @@ class aladin(bookStore):
 
     def aladin_best_phone_v1(self, keyword, page, n, title):
         super().printFuncInfo(self.aladin_best_phone_v1.__name__, keyword, page, n)
-        page = page - 2
-        n = n - 1
-
-        self.driver.get(self.url_aladin)
 
         # 광고 팝업 끄기
         pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[2]')
@@ -441,3 +441,154 @@ class aladin(bookStore):
             nextPageBtn.click()
             super().delay()
 
+    def searchFakeKeywords(self, fkeywordCnt, fkeywordDelay):
+        fakeKeywords = open('keyword.txt', 'r', encoding='UTF8').read().split('\n')
+        Keyword_3 = random.choices(fakeKeywords, k=fkeywordCnt)
+
+        for fKeyword in Keyword_3:
+            try:
+                print(fKeyword)
+                # 책 제목 입력을 위한 검색창 클릭
+                # document.getElementsByClassName('iptTxt')[0].value = '영어회화'
+                search_box = self.driver.find_element(By.ID, 'SearchWordBanner')
+                search_box.click()
+
+                search_box2 = self.driver.find_element(By.ID, 'SearchWord')
+                search_box2.send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
+                search_box2.click()
+
+                search_box2.send_keys(fKeyword)
+
+                super().delay()
+
+                # 검색 버튼 클릭
+                # document.getElementsByClassName('schBtn')[0].childNodes[0].click()
+                btn = self.driver.find_element(By.CLASS_NAME, 'sch-go')
+                btn.click()
+                super().delay_n(fkeywordDelay)
+
+                try:
+                    addCartBtn = self.driver.find_element(By.XPATH,
+                                                          '//*[@id="Search3_Result"]/div[4]/table/tbody/tr/td[3]/img')
+                    addCartBtn.click()
+                    super().delay_n(2)
+                    addCartBtn = self.driver.find_element(By.XPATH, '//*[@id="Search3_Result"]/div[4]/div[2]/a[1]')
+                    addCartBtn.click()
+                except Exception as e:
+                    print("do exception!! : ", e)
+                    continue
+
+            except Exception as e:
+                logging.info("keyword loop exception!! : ", e)
+
+        homebtn = self.driver.find_element(By.XPATH, '/html/body/div[2]/h1')
+        homebtn.click()
+        super().delay_n(2)
+
+
+    def closeAdPopup(self):
+        try:
+            # 오늘 그만보기
+            pop_up_close_btn = self.driver.find_element(By.XPATH, '//*[@id="spaceEventLayer"]/div[1]/a[1]')
+            pop_up_close_btn.click()
+        except:
+            a = 0
+
+    def clickTargetBookInBest(self, keyword, delay_s):
+        bestbtn = self.driver.find_element(By.XPATH,'//*[@id="welcom_wrap"]/div[9]/div/li[1]')
+        bestbtn.click()
+        super().delay()
+
+        i = 0
+        endflag = False
+        for step in range(0,5):
+            pageOffset = 0
+            if step != 0:
+                pageOffset = 2
+
+            for _page in range(1, 6): # 7은 '>' 버튼, 8은 '>>' 버튼
+                targets = self.driver.find_elements(By.CLASS_NAME, 'b_book_t')
+                super().delay()
+                for target in targets:
+                    # step*250 + (page-1)*50
+                    i = i + 1
+                    if keyword in target.text:
+                        # endflag = True
+                        target.click()
+                        self.rank = i
+                        print('idx : ' + str(i))
+                        logging.info('idx : ' + str(i))
+                        logging.info(self.driver.current_url)
+                        logging.info('clicked title : ' + self.driver.title)
+                        print('clicked title : ' + self.driver.title)
+                        addCartBtn = self.driver.find_element(By.ID, 'btnAddBasket')
+                        addCartBtn.click()
+                        self.doScrollDown(delay_s)
+                        return self.rank
+                if endflag == True:
+                    break
+
+                nextPageBtn = self.driver.find_element(By.XPATH, '//*[@id="contents_Wrap"]/div[5]/div/ul/li['+str((_page+1)+pageOffset)+']/a')
+                nextPageBtn.click()
+                super().delay()
+
+
+
+
+
+    def clickSomething1(self):  # 알라딘이 만든 사은품
+        ActionChains(self.driver).send_keys(Keys.PAGE_DOWN).perform()
+        ActionChains(self.driver).send_keys(Keys.PAGE_DOWN).perform()
+        ActionChains(self.driver).send_keys(Keys.PAGE_DOWN).perform()
+
+        Btn = self.driver.find_element(By.XPATH, '//*[@id="_ctl0_pGift"]/div/h2/a')
+        ActionChains(self.driver).move_to_element(Btn).perform()
+        Btn.click()
+        self.delay_n(5)
+
+        homeBtn = self.driver.find_element(By.XPATH, '//*[@id="fsHeader"]/h1/a')
+        homeBtn.click()
+    def clickChoiceOfMD(self):      # 편집장의 선택
+        Btn = self.driver.find_element(By.XPATH, '//*[@id="welcom_wrap"]/div[11]/h2/a')
+        ActionChains(self.driver).move_to_element(Btn).perform()
+
+        Btn.click()
+        self.delay_n(5)
+
+        homeBtn = self.driver.find_element(By.XPATH, '/html/body/div[2]/h1')
+        homeBtn.click()
+
+    def aladin_best_phone_v2(self, keyword, page, n, title):
+        fkeywordCnt = 2
+        fkeywordDelay = 20
+        targetDelay = 60
+        super().printFuncInfo(self.aladin_best_phone_v2.__name__, keyword, page, n)
+
+        self.closeAdPopup()
+
+        self.aladin_login()
+
+        self.clickChoiceOfMD()
+        self.clickSomething1()
+
+        self.searchFakeKeywords(fkeywordCnt, fkeywordDelay)
+
+        self.clickTargetBookInBest(title, targetDelay)
+
+
+    def aladin_best_phone_v3(self, keyword, page, n, title):
+        fkeywordCnt = 2
+        fkeywordDelay = 20
+        targetDelay = 60
+        super().printFuncInfo(self.aladin_best_phone_v3.__name__, keyword, page, n)
+
+        self.closeAdPopup()
+        self.clickTargetBookInBest(title, targetDelay)
+        # self.aladin_login()
+
+        self.clickChoiceOfMD()
+        self.clickSomething1()
+
+        self.searchFakeKeywords(fkeywordCnt, fkeywordDelay)
+
+        self.clickTargetBookInBest(title, targetDelay)

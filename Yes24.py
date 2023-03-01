@@ -203,11 +203,16 @@ class yes24(bookStore):
 
 
     def bookOfMonthClick(self, delay_s):
-        btn = self.driver.find_element(By.XPATH, '//*[@id="main_top_area"]/div[2]/ul/li[9]/a/em[1]/img')
+        btn = self.driver.find_element(By.XPATH, '//*[@id="main_top_area"]/div[2]/ul/li[8]/a')
         btn.click()
         self.doScrollDown(delay_s)
         homeBtn = self.driver.find_element(By.ID, 'Layer_1')
         homeBtn.click()
+        # btn = self.driver.find_element(By.XPATH, '//*[@id="main_top_area"]/div[2]/ul/li[9]/a/em[1]/img')
+        # btn.click()
+        # self.doScrollDown(delay_s)
+        # homeBtn = self.driver.find_element(By.ID, 'Layer_1')
+        # homeBtn.click()
     def bookOfTodayClick(self, delay_s):
         btns = self.driver.find_elements(By.CLASS_NAME, 'tBook_img')
 

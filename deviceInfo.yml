@@ -2,21 +2,62 @@ device:
   dc1:
     "platformName": "Android"
     "platformVersion": "9.0"
-    "deviceName": "ce04171460d730dd0c"
-    "udid": "ce04171460d730dd0c"
+    "deviceName": "ce0317136d6b60b10c"
+    "udid": "ce0317136d6b60b10c"
     "browserName": "chrome"
     "browserVersion": "110.0.5481.64"
+
   dc2:
     "platformName": "Android"
     "platformVersion": "9.0"
-    "deviceName": "ce10171ab8ac5f3e04"
-    "udid": "ce10171ab8ac5f3e04"
+    "deviceName": "ce05171555816f1b03"
+    "udid": "ce05171555816f1b03"
     "browserName": "chrome"
     "browserVersion": "109.0.5414.117"
   dc3:
     "platformName": "Android"
     "platformVersion": "9.0"
-    "deviceName": "ce12160cc35a722e05"
-    "udid": "ce12160cc35a722e05"
+    "deviceName": "ce051715544da4e30d"
+    "udid": "ce051715544da4e30d"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
+  dc4:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce0817180bec302b0c"
+    "udid": "ce0817180bec302b0c"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
+  dc5:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce061716a003d72501"
+    "udid": "ce061716a003d72501"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
+
+  dc6:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce061716d834ec260d"
+    "udid": "ce061716d834ec260d"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
+
+  dc7:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce091719ead6de2902"
+    "udid": "ce091719ead6de2902"
+    "browserName": "chrome"
+    "browserVersion": "109.0.5414.117"
+
+
+not_working_device:
+  dc5:
+    "platformName": "Android"
+    "platformVersion": "9.0"
+    "deviceName": "ce0517155912102e01"
+    "udid": "ce0517155912102e01"
     "browserName": "chrome"
     "browserVersion": "109.0.5414.117"
