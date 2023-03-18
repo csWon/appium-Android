@@ -12,9 +12,6 @@ class worker(unittest.TestCase):
         self.dc = dc
         self.server_ip = server_ip
         self.dManager = driverManager(self.dc, self.server_ip)
-        self.dManager.id = ''
-        self.dManager.pw = ''
-        self.dManager.function = ''
         self.driver = ''
         self.tickets = tickets
 
@@ -39,6 +36,10 @@ class worker(unittest.TestCase):
 
                 logger = loggingManager()
                 self.driver = self.dManager.open_browser_phone()
+
+                self.driver.id = ''
+                self.driver.pw = ''
+                self.driver.function = ''
 
                 status = 'S'
                 errorMsg = ''
