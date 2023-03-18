@@ -20,9 +20,10 @@ class worker(unittest.TestCase):
     def tearDown(self):
         if self.driver != '':
             self.driver.quit()
+
     def Do(self):
         url_ip_check = 'https://ko.infobyip.com/'
-        url_k_product = 'https://product.kyobobook.co.kr/'
+        url_k_product = 'https://www.kyobobook.co.kr/'
         url_naver = 'https://www.naver.com'
         url_aladin = 'https://www.aladin.co.kr/'
         url_ypbook = 'https://www.ypbooks.co.kr/'
@@ -53,7 +54,7 @@ class worker(unittest.TestCase):
                     self.driver.quit()
 
                 except Exception as e:
-                    print("exception!!! : ", traceback.format_exc())
+                    print(self.dManager.dc.get("deviceName"), "exception!!! : ", traceback.format_exc())
                     print("error occured")
                     self.driver.quit()
                     status = 'F'
@@ -71,6 +72,9 @@ class worker(unittest.TestCase):
                     logger.logging(site=ticket[0].__name__,
                                    ticketNm=ticket[4].replace(" ", "_"),
                                    deviceId=self.dManager.dc.get("deviceName"),
+                                   id=self.dManager.id,
+                                   pw=self.dManager.pw,
+                                   function=self.dManager.function,
                                    status=status,
                                    rank=rank,
                                    loadTime=sec,

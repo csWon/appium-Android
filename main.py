@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     deviceInfoLength = len(deviceInfo['device'].items())
 
-    port = 4723
+    port = 4721
     suiteArr = []
 
     tm = ticketManager()

@@ -5,7 +5,7 @@ import datetime
 
 class bookStore:
     url_ip_check = 'https://ko.infobyip.com/'
-    url_k_product = 'https://product.kyobobook.co.kr/'
+    url_k_product = 'https://www.kyobobook.co.kr/'
     url_naver = 'https://www.naver.com'
     url_aladin = 'https://www.aladin.co.kr/'
     url_ypbook = 'https://www.ypbooks.co.kr/'
