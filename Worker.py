@@ -12,6 +12,9 @@ class worker(unittest.TestCase):
         self.dc = dc
         self.server_ip = server_ip
         self.dManager = driverManager(self.dc, self.server_ip)
+        self.dManager.id = ''
+        self.dManager.pw = ''
+        self.dManager.function = ''
         self.driver = ''
         self.tickets = tickets
 
