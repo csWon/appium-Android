@@ -37,9 +37,9 @@ class worker(unittest.TestCase):
                 logger = loggingManager()
                 self.driver = self.dManager.open_browser_phone()
 
-                self.driver.id = ''
-                self.driver.pw = ''
-                self.driver.function = ''
+                self.dManager.id = ''
+                self.dManager.pw = ''
+                self.dManager.function = ''
 
                 status = 'S'
                 errorMsg = ''
