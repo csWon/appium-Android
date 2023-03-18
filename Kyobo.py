@@ -18,7 +18,7 @@ class kyobo(bookStore):
         return self.doFunctionList[doIdx](keyword, page, n, title)
 
     def kyobo_best_v1(self, keyword, page, n, title):
-        self.function = "kyobo_best_v1"
+        self.driver.function = "kyobo_best_v1"
         rank = 1;
 
         super().printFuncInfo(self.kyobo_best_v1.__name__, keyword, page, n)
