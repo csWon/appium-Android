@@ -37,10 +37,6 @@ class worker(unittest.TestCase):
                 logger = loggingManager()
                 self.driver = self.dManager.open_browser_phone()
 
-                self.dManager.id = ''
-                self.dManager.pw = ''
-                self.dManager.function = ''
-
                 status = 'S'
                 errorMsg = ''
                 try:
@@ -54,7 +50,11 @@ class worker(unittest.TestCase):
 
                     publisherClass = ticket[0](self.driver)
 
-                    rank = publisherClass.do(keyword, page, n, title, doIdx)
+                    dic = publisherClass.do(keyword, page, n, title, doIdx)
+                    rank = dic['rank']
+                    func = dic['func']
+                    id = dic['id']
+                    pw = dic['pw']
                     self.driver.quit()
 
                 except Exception as e:
@@ -63,6 +63,9 @@ class worker(unittest.TestCase):
                     self.driver.quit()
                     status = 'F'
                     rank = 0
+                    func = ''
+                    id = ''
+                    pw = ''
                     errorMsg = traceback.format_exception_only(type(e), e)
 
                 finally:
@@ -76,9 +79,9 @@ class worker(unittest.TestCase):
                     logger.logging(site=ticket[0].__name__,
                                    ticketNm=ticket[4].replace(" ", "_"),
                                    deviceId=self.dManager.dc.get("deviceName"),
-                                   id=self.dManager.id,
-                                   pw=self.dManager.pw,
-                                   function=self.dManager.function,
+                                   id=id,
+                                   pw=pw,
+                                   func=func,
                                    status=status,
                                    rank=rank,
                                    loadTime=sec,

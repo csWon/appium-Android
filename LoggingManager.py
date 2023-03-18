@@ -4,11 +4,14 @@ import traceback
 
 class loggingManager:
     url = 'http://20.196.196.177:8081/dnc/log/addLog.do'
-    def logging(self, site, ticketNm, deviceId, status, rank, loadTime, ip, errorMsg):
+    def logging(self, site, ticketNm, deviceId, id, pw, func ,status, rank, loadTime, ip, errorMsg):
         data = {
             "site": site,
             "ticketNm": ticketNm,
             "deviceId": deviceId,
+            "id": id,
+            "pw": pw,
+            "function": func,
             "status": status,
             "rank": rank,
             "loadTime": loadTime,
