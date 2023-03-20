@@ -28,10 +28,10 @@ class worker(unittest.TestCase):
         url_aladin = 'https://www.aladin.co.kr/'
         url_ypbook = 'https://www.ypbooks.co.kr/'
 
-        for ticket in self.tickets:
+        for i in range(1, 60):
             # s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             # logging.info('timeStamp : ' + s)
-            for i in range(1, 60):
+            for ticket in self.tickets:
                 start = time.time()
 
                 logger = loggingManager()
